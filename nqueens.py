@@ -1,3 +1,4 @@
+# O(n!) and O(n^2)
 def is_safe(board, row, col):
    
     

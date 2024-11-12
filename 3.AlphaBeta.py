@@ -1,3 +1,4 @@
+#O(b^d) and O(d)
 MAX, MIN = float('inf'), float('-inf')
 def minimax(depth, nodeIndex, maximizingPlayer, values, alpha, beta):
     if depth == 3:  

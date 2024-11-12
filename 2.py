@@ -1,3 +1,4 @@
+#O(b^D) braahcing factor and depth and O(d)
 player, opponent = 'x', 'o'
 def isMovesLeft(board):
     for i in range(3):

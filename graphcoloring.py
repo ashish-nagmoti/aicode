@@ -1,3 +1,4 @@
+# O(m^n) m->color abd n->vertices and o(n)
 def is_safe(graph, color, vertex, c):
     for i in range(len(graph)):
         if graph[vertex][i] == 1 and color[i] == c:

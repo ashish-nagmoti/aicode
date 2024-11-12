@@ -1,3 +1,4 @@
+# O(9^E) and O(E)
 class Sudoku:
     def __init__(self, board):
         self.board = board

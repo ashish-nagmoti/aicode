@@ -1,4 +1,5 @@
 #h only considerd for last ele so aedg is ans over abg 
+#O(n+e) and O(n)
 def aStarAlgo(start_node,stop_node):
     open_set = set(start_node)
     closed_set = set()
