@@ -1,0 +1,33 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+data = pd.read_csv('Desktop/iris.csv')
+X = data.drop('species', axis=1)
+y = data['species']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+conf_matrix = confusion_matrix(y_test, y_pred)
+TP = conf_matrix[1, 1]
+TN = conf_matrix[0, 0]
+FP = conf_matrix[0, 1]
+FN = conf_matrix[1, 0]
+
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred, average='macro')
+recall = recall_score(y_test, y_pred, average='macro')
+
+print(f'Confusion Matrix:\n{conf_matrix}')
+print(f'TP: {TP}, FP: {FP}, TN: {TN}, FN: {FN}')
+print(f'Accuracy: {accuracy}')
+print(f'Error Rate: {error_rate}')
+print(f'Precision: {precision}')
+print(f'Recall: {recall}')

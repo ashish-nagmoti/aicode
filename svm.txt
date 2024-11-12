@@ -1,0 +1,55 @@
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+
+# Load and prepare the data
+df = pd.read_csv("emails.csv")
+
+# Step 1: Preprocessing
+# Assuming the last column is 'spam' with 0 = Not Spam, 1 = Spam
+# Drop unnecessary columns (like Email No.)
+df.drop(columns=['Email No.'], inplace=True, errors='ignore')
+
+# Separate features and target
+X = df.iloc[:, :-1]
+y = df.iloc[:, -1]
+
+# Step 2: Split the data
+train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=0.25, random_state=42)
+
+# Step 3: Train SVM model
+svc = SVC(C=1.0, kernel='rbf', gamma='auto')
+svc.fit(train_x, train_y)
+
+# Step 4: Evaluate the model on the test set
+y_pred = svc.predict(test_x)
+print("Accuracy Score on test data:", accuracy_score(test_y, y_pred))
+
+# Prepare a CountVectorizer with the same vocabulary as the training data columns
+vectorizer = CountVectorizer(vocabulary=X.columns)
+
+# Function to predict new message
+def predict_message(message):
+    # Preprocess the new message: lowercase, transform with the same vocabulary
+    message_vector = vectorizer.transform([message.lower()])  # transform message to word count vector
+    message_df = pd.DataFrame(message_vector.toarray(), columns=X.columns)  # convert to DataFrame
+
+    # Make prediction
+    prediction = svc.predict(message_df)
+
+    # Output result
+    if prediction[0] == 1:
+        print("The message is classified as Spam.")
+    else:
+        print("The message is classified as Not Spam.")
+
+
+# Test the function with a new message
+#new_message = "Hello Om, I'm planning a trip to Goa next month! I'm so excited, it's going to be an amazing experience. Let’s catch up before I leave!"
+#predict_message(new_message)
+
+# Uncomment the following to test a different message
+new_message = "You are the lucky winner of our $5,000 cash giveaway! Just reply to claim your prize now."
+predict_message(new_message)
